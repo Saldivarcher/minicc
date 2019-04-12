@@ -2,6 +2,7 @@
 #define LEXER_H
 
 #include "Token.h"
+#include <cstring>
 #include <istream>
 #include <string>
 #include <vector>
@@ -24,6 +25,20 @@ private:
   }
 
   char peek() { return buffer.peek(); }
+
+  inline bool is_symbol(const char &ch) {
+    if (std::strchr("+-*/;=(),{}<>[]&.!?:|^%~#", ch))
+      return true;
+    return false;
+  }
+
+  void eatCharLiteral(char &);
+  void eatLineComment(char &);
+  void eatNumber(char &);
+  void eatStringLiteral(char &);
+  void eatSymbol(char &);
+  void eatWhitespace(char &);
+  void eatIdentifier(char &);
 
 public:
   Lexer(std::istream &buffer) : buffer(buffer) {}

@@ -13,7 +13,7 @@ std::ostream &operator<<(std::ostream &os, const Token &tok) {
 
 // TODO: Don't initialize the map everytime the function is hit, figure out how
 // to do it within the class
-TokenKind Token::getSymbolToken(const std::string &symbol) {
+std::unique_ptr<TokenKind> Token::getSymbolToken(const std::string &symbol) {
   std::unordered_map<std::string, TokenKind> symbols = {
       {"<<=", TK_SHL_EQ}, {">>=", TK_SHR_EQ}, {"!=", TK_NE},
       {"&&", TK_LOGAND},  {"++", TK_INC},     {"--", TK_DEC},
@@ -23,10 +23,12 @@ TokenKind Token::getSymbolToken(const std::string &symbol) {
       {"%=", TK_MOD_EQ},  {"+=", TK_ADD_EQ},  {"-=", TK_SUB_EQ},
       {"&=", TK_AND_EQ},  {"^=", TK_XOR_EQ},  {"|=", TK_OR_EQ}};
 
-  return symbols.at(symbol);
+  if (symbols.count(symbol) > 0)
+    return std::make_unique<TokenKind>(symbols.at(symbol));
+  return nullptr;
 }
 
-TokenKind Token::getKeywordToken(const std::string &keyword) {
+std::unique_ptr<TokenKind> Token::getKeywordToken(const std::string &keyword) {
   std::unordered_map<std::string, TokenKind> keywords = {
       {"_Alignof", TK_ALIGNOF},
       {"_Bool", TK_BOOL},
@@ -49,5 +51,7 @@ TokenKind Token::getKeywordToken(const std::string &keyword) {
       {"void", TK_VOID},
       {"while", TK_WHILE}};
 
-  return keywords.at(keyword);
+  if (keywords.count(keyword) > 0)
+    return std::make_unique<TokenKind>(keywords.at(keyword));
+  return nullptr;
 }

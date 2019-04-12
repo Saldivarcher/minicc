@@ -1,6 +1,7 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
+#include <memory>
 #include <ostream>
 #include <string>
 #include <unordered_map>
@@ -81,8 +82,8 @@ public:
   Token(TokenKind kind) : kind(kind) {}
   Token(TokenKind kind, int val) : kind(kind), val(val) {}
 
-  static TokenKind getSymbolToken(const std::string &);
-  static TokenKind getKeywordToken(const std::string &);
+  static std::unique_ptr<TokenKind> getSymbolToken(const std::string &);
+  static std::unique_ptr<TokenKind> getKeywordToken(const std::string &);
 };
 
 #endif

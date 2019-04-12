@@ -1,10 +1,14 @@
 int main {
     int what = 10;
-    int what = 'c';
-    char what = '\n';
+    char test = '\r';
+    char what = 'a';
 
-    if (what == 'c')
-        huh();
+    if (what == 'a') {
+        test = "hey";
+        func();
+    }
+
+
 
     return 0;
 }
